@@ -67,11 +67,38 @@ class DocCommand(object):
         subprocess.run(["ldoc", "."])
 
 
+def git_command(script_name, cmd):
+    print("Git Status for: " + script_name + "\n")
+    subprocess.run(["cd", f"{dev_path}/{script_name}"])
+    os.chdir(f"{dev_path}/{script_name}")
+    subprocess.run(["git", cmd])
+
+
+class GitCommand(object):
+    """Look at git statuses of Norns sketches at a glance"""
+
+    def status(self, script):
+        if script == "all":
+            for a_script in valid_scripts:
+                git_command(a_script, "status")
+                print("*************\n\n")
+        else:
+            git_command(script, "status")
+
+    def pull(self, script):
+        if script == "all":
+            for a_script in valid_scripts:
+                git_command(a_script, "pull")
+        else:
+            git_command(script, "pull")
+
+
 class Norns(object):
     """A command line tool to work with the Norns from your local dev machine."""
 
     def __init__(self):
         self.doc = DocCommand()
+        self.git = GitCommand()
 
     def sync(self, script):
         """rsync script folder up to Norns"""
