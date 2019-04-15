@@ -93,12 +93,25 @@ class GitCommand(object):
             git_command(script, "pull")
 
 
+class RemoteCommand(object):
+    def list(self):
+        """List all scripts present on Norns."""
+        print("*** remote scripts ***")
+        subprocess.run(["ssh", norns_url, f"ls {norns_code_path}"])
+
+    def see(self, script):
+        """See contents of a script folder on Norns."""
+        remote_path = f"{norns_code_path}/{script}/"
+        subprocess.run(["ssh", norns_url, f"ls {remote_path}"])
+
+
 class Norns(object):
     """A command line tool to work with the Norns from your local dev machine."""
 
     def __init__(self):
         self.doc = DocCommand()
         self.git = GitCommand()
+        self.remote = RemoteCommand()
 
     def sync(self, script):
         """rsync script folder up to Norns"""
