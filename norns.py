@@ -108,6 +108,14 @@ class Norns(object):
         else:
             rsync_up(script)
 
+    def replace(self, script):
+        if not is_valid(script):
+            raise ValueError('Not a valid Norns script.')
+        print("Deleting remote files.")
+        remote_path = f"{norns_code_path}/{script}"
+        subprocess.run(["ssh", norns_url, f"rm -rf {remote_path}"])
+        rsync_up(script)
+
     def shell(self):
         """SSH into Norns with we/sleep credentials."""
         subprocess.run(["ssh", norns_url])
