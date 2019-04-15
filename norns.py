@@ -4,12 +4,13 @@ import fire
 import subprocess
 import os
 
-import configparser
-config = configparser.ConfigParser()
-config.read('norns.ini')
-
 from os.path import expanduser
 home = expanduser("~")
+
+import configparser
+config = configparser.ConfigParser()
+config.read(f"{home}/.norns.ini")
+
 
 # local config
 dev_path = home + "/" + config['LOCAL']['DEV_PATH']
@@ -88,10 +89,6 @@ class Norns(object):
         """List all valid Norns scripts."""
         print("*** Valid scripts ***")
         return valid_scripts
-
-    def cd(self, script):
-        """cd to a Norns script folder."""
-        subprocess.run(["cd", f"{dev_path}/{script}"])
 
     def open(self, script):
         """open a Norns script folder."""
